@@ -9,3 +9,4 @@ data class DataResponse<T>(
     val message: String,
     val data: T? = null
 )
+
