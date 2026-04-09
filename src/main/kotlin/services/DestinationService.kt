@@ -17,17 +17,27 @@ import java.util.UUID
 
 class DestinationService(private val repo: IDestinationRepository) {
 
+    private fun destinationListPayload(items: List<Any>) = mapOf(
+        "destinations" to items,
+        "wisata" to items,
+    )
+
+    private fun destinationItemPayload(item: Any) = mapOf(
+        "destination" to item,
+        "wisata" to item,
+    )
+
     suspend fun getAllDestinations(call: ApplicationCall) {
         val search   = call.request.queryParameters["search"] ?: ""
         val kategori = call.request.queryParameters["kategori"] ?: ""
         val items    = repo.getDestinations(search, kategori)
-        call.respond(DataResponse("success", "Berhasil mengambil daftar destinasi", mapOf("destinations" to items)))
+        call.respond(DataResponse("success", "Berhasil mengambil daftar destinasi", destinationListPayload(items)))
     }
 
     suspend fun getDestinationById(call: ApplicationCall) {
         val id   = call.parameters["id"] ?: throw AppException(400, "ID destinasi tidak boleh kosong!")
         val item = repo.getDestinationById(id) ?: throw AppException(404, "Data destinasi tidak ditemukan!")
-        call.respond(DataResponse("success", "Berhasil mengambil data destinasi", mapOf("destination" to item)))
+        call.respond(DataResponse("success", "Berhasil mengambil data destinasi", destinationItemPayload(item)))
     }
 
     private suspend fun getRequest(call: ApplicationCall): DestinationRequest {
@@ -81,7 +91,13 @@ class DestinationService(private val repo: IDestinationRepository) {
         }
 
         val id = repo.addDestination(req.toEntity())
-        call.respond(DataResponse("success", "Berhasil menambahkan destinasi", mapOf("destinationId" to id)))
+        call.respond(
+            DataResponse(
+                "success",
+                "Berhasil menambahkan destinasi",
+                mapOf("destinationId" to id, "wisataId" to id)
+            )
+        )
     }
 
     suspend fun updateDestination(call: ApplicationCall) {
@@ -121,4 +137,16 @@ class DestinationService(private val repo: IDestinationRepository) {
         if (!file.exists()) return call.respond(HttpStatusCode.NotFound)
         call.respondFile(file)
     }
+
+    suspend fun getAllWisata(call: ApplicationCall) = getAllDestinations(call)
+
+    suspend fun getWisataById(call: ApplicationCall) = getDestinationById(call)
+
+    suspend fun createWisata(call: ApplicationCall) = createDestination(call)
+
+    suspend fun updateWisata(call: ApplicationCall) = updateDestination(call)
+
+    suspend fun deleteWisata(call: ApplicationCall) = deleteDestination(call)
+
+    suspend fun getWisataImage(call: ApplicationCall) = getDestinationImage(call)
 }

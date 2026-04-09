@@ -76,6 +76,16 @@ fun Application.configureRouting() {
             get("/{id}/image") { destinationService.getDestinationImage(call) }
         }
 
+        // Alias kompatibilitas untuk frontend lama
+        route("/wisata") {
+            get              { destinationService.getAllWisata(call) }
+            post             { destinationService.createWisata(call) }
+            get("/{id}")     { destinationService.getWisataById(call) }
+            put("/{id}")     { destinationService.updateWisata(call) }
+            delete("/{id}")  { destinationService.deleteWisata(call) }
+            get("/{id}/image") { destinationService.getWisataImage(call) }
+        }
+
         // ── Wisata Samosir — Kuliner ───────────────────────────────────
         // GET    /culinaries?search=
         // POST   /culinaries
