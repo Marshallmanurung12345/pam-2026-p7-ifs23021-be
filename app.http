@@ -1,36 +1,34 @@
-## Global Variabel
-@BaseUrl = https://pam-2026-p4-ifs23021-be.marshalll.fun:8080/
-#@BaseUrl = http://127.0.0.1:8000
+## Environment
+@BaseUrl = http://127.0.0.1:8000
+# @BaseUrl = https://pam-2026-p7-ifs23021-be.marshalll.fun:8080
+
+## Shared files
+@ImageFile = ./example.png
+
+## Root
+### Health Check
+GET {{BaseUrl}}/
+Content-Type: application/json
 
 ## Profile
-## ===========================================
-
-### Mengambil semua data tumbuhan
+### Get Profile
 # @name GetProfile
 GET {{BaseUrl}}/profile
 Content-Type: application/json
 
-### Mengambil photo profil
+### Get Profile Photo
 # @name GetProfilePhoto
 GET {{BaseUrl}}/profile/photo
 Content-Type: application/json
 
-
 ## Plants
-## ===========================================
-
-### Mengambil semua data tumbuhan
+### Get All Plants
 # @name GetAllPlants
 GET {{BaseUrl}}/plants?search=
 Content-Type: application/json
 
-#> {%
-#    client.global.set("plantId", response.body.data.plants[0].id);
-#    console.log(client.global.get("plantId"))
-#%}
-
-### Menambahkan data tumbuhan baru
-# @name PostPlants
+### Create Plant
+# @name CreatePlant
 POST {{BaseUrl}}/plants
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
@@ -41,96 +39,524 @@ Kangkung
 --WebAppBoundary
 Content-Disposition: form-data; name="deskripsi"
 
-Brokoli adalah sayuran hijau yang kaya vitamin, mineral, dan serat
+Sayuran hijau yang kaya vitamin, mineral, dan serat.
 --WebAppBoundary
 Content-Disposition: form-data; name="manfaat"
 
-Membantu detoksifikasi dan menjaga kesehatan mata
+Membantu menjaga daya tahan tubuh dan kesehatan mata.
 --WebAppBoundary
 Content-Disposition: form-data; name="efekSamping"
 
-Dapat menyebabkan kembung
+Dapat menyebabkan kembung jika dikonsumsi berlebihan.
 --WebAppBoundary
 Content-Disposition: form-data; name="file"; filename="example.png"
 Content-Type: image/png
 
-< ./example.png
+< {{ImageFile}}
 --WebAppBoundary--
 
 > {%
     client.global.set("plantId", response.body.data.plantId);
-    console.log(client.global.get("plantId"))
 %}
 
-### Mengambil data tumbuhan berdasarkan id-nya
+### Get Plant By Id
 # @name GetPlantById
 GET {{BaseUrl}}/plants/{{plantId}}
 Content-Type: application/json
 
-### Melihat gambar tumbuhan
+### Get Plant Image
 # @name GetPlantImageById
 GET {{BaseUrl}}/plants/{{plantId}}/image
 Content-Type: application/json
 
-### Mengubah hanya data plant berdasarkan id-nya
-# @name PutPlantOnlyData
+### Update Plant Data Only
+# @name UpdatePlantData
 PUT {{BaseUrl}}/plants/{{plantId}}
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
 --WebAppBoundary
 Content-Disposition: form-data; name="nama"
 
-Brokoli Update
+Kangkung Update
 --WebAppBoundary
 Content-Disposition: form-data; name="deskripsi"
 
-Brokoli adalah sayuran hijau yang kaya vitamin, mineral, dan serat
+Deskripsi tanaman diperbarui.
 --WebAppBoundary
 Content-Disposition: form-data; name="manfaat"
 
-Membantu detoksifikasi dan menjaga kesehatan mata
+Manfaat tanaman diperbarui.
 --WebAppBoundary
 Content-Disposition: form-data; name="efekSamping"
 
-Dapat menyebabkan kembung
+Efek samping tanaman diperbarui.
 --WebAppBoundary--
 
-### Mengubah gambar dan data plant berdasarkan id-nya
-# @name PutPlant
+### Update Plant With Image
+# @name UpdatePlant
 PUT {{BaseUrl}}/plants/{{plantId}}
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
 --WebAppBoundary
 Content-Disposition: form-data; name="nama"
 
-Brokoli
+Kangkung Final
 --WebAppBoundary
 Content-Disposition: form-data; name="deskripsi"
 
-Brokoli adalah sayuran hijau yang kaya vitamin, mineral, dan serat
+Deskripsi final tanaman.
 --WebAppBoundary
 Content-Disposition: form-data; name="manfaat"
 
-Membantu detoksifikasi dan menjaga kesehatan mata
+Manfaat final tanaman.
 --WebAppBoundary
 Content-Disposition: form-data; name="efekSamping"
 
-Dapat menyebabkan kembung
+Efek samping final tanaman.
 --WebAppBoundary
 Content-Disposition: form-data; name="file"; filename="example.png"
 Content-Type: image/png
 
-< ./example.png
+< {{ImageFile}}
 --WebAppBoundary--
 
-### Menghapus data plant berdasarkan id-nya
+### Delete Plant
 # @name DeletePlant
 DELETE {{BaseUrl}}/plants/{{plantId}}
 Content-Type: application/json
 
+## Destinations
+### Get All Destinations
+# @name GetAllDestinations
+GET {{BaseUrl}}/destinations?search=&kategori=
+Content-Type: application/json
 
+### Create Destination
+# @name CreateDestination
+POST {{BaseUrl}}/destinations
+Content-Type: multipart/form-data; boundary=WebAppBoundary
 
+--WebAppBoundary
+Content-Disposition: form-data; name="nama"
 
+Bukit Holbung
+--WebAppBoundary
+Content-Disposition: form-data; name="slug"
 
+bukit-holbung
+--WebAppBoundary
+Content-Disposition: form-data; name="kategori"
 
+Alam
+--WebAppBoundary
+Content-Disposition: form-data; name="deskripsi"
 
+Destinasi perbukitan dengan panorama Danau Toba.
+--WebAppBoundary
+Content-Disposition: form-data; name="lokasi"
+
+Samosir
+--WebAppBoundary
+Content-Disposition: form-data; name="latitude"
+
+2.564
+--WebAppBoundary
+Content-Disposition: form-data; name="longitude"
+
+98.689
+--WebAppBoundary
+Content-Disposition: form-data; name="hargaTiket"
+
+15000
+--WebAppBoundary
+Content-Disposition: form-data; name="jamBuka"
+
+08:00 - 18:00
+--WebAppBoundary
+Content-Disposition: form-data; name="kontak"
+
+081234567890
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="example.png"
+Content-Type: image/png
+
+< {{ImageFile}}
+--WebAppBoundary--
+
+> {%
+    client.global.set("destinationId", response.body.data.destinationId);
+%}
+
+### Get Destination By Id
+# @name GetDestinationById
+GET {{BaseUrl}}/destinations/{{destinationId}}
+Content-Type: application/json
+
+### Get Destination Image
+# @name GetDestinationImageById
+GET {{BaseUrl}}/destinations/{{destinationId}}/image
+Content-Type: application/json
+
+### Update Destination
+# @name UpdateDestination
+PUT {{BaseUrl}}/destinations/{{destinationId}}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="nama"
+
+Bukit Holbung Update
+--WebAppBoundary
+Content-Disposition: form-data; name="slug"
+
+bukit-holbung-update
+--WebAppBoundary
+Content-Disposition: form-data; name="kategori"
+
+Alam
+--WebAppBoundary
+Content-Disposition: form-data; name="deskripsi"
+
+Destinasi perbukitan dengan panorama yang diperbarui.
+--WebAppBoundary
+Content-Disposition: form-data; name="lokasi"
+
+Samosir, Sumatera Utara
+--WebAppBoundary
+Content-Disposition: form-data; name="latitude"
+
+2.565
+--WebAppBoundary
+Content-Disposition: form-data; name="longitude"
+
+98.690
+--WebAppBoundary
+Content-Disposition: form-data; name="hargaTiket"
+
+20000
+--WebAppBoundary
+Content-Disposition: form-data; name="jamBuka"
+
+07:00 - 18:00
+--WebAppBoundary
+Content-Disposition: form-data; name="kontak"
+
+081234567891
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="example.png"
+Content-Type: image/png
+
+< {{ImageFile}}
+--WebAppBoundary--
+
+### Delete Destination
+# @name DeleteDestination
+DELETE {{BaseUrl}}/destinations/{{destinationId}}
+Content-Type: application/json
+
+## Culinaries
+### Get All Culinaries
+# @name GetAllCulinaries
+GET {{BaseUrl}}/culinaries?search=
+Content-Type: application/json
+
+### Create Culinary
+# @name CreateCulinary
+POST {{BaseUrl}}/culinaries
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="nama"
+
+Naniura
+--WebAppBoundary
+Content-Disposition: form-data; name="deskripsi"
+
+Olahan ikan khas Batak tanpa dimasak dengan bumbu rempah.
+--WebAppBoundary
+Content-Disposition: form-data; name="bahanUtama"
+
+Ikan mas, andaliman, asam cikala
+--WebAppBoundary
+Content-Disposition: form-data; name="caraPenyajian"
+
+Disajikan dingin sebagai hidangan khas.
+--WebAppBoundary
+Content-Disposition: form-data; name="hargaRataRata"
+
+35000
+--WebAppBoundary
+Content-Disposition: form-data; name="lokasiTersedia"
+
+Tomok dan Tuk Tuk
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="example.png"
+Content-Type: image/png
+
+< {{ImageFile}}
+--WebAppBoundary--
+
+> {%
+    client.global.set("culinaryId", response.body.data.culinaryId);
+%}
+
+### Get Culinary By Id
+# @name GetCulinaryById
+GET {{BaseUrl}}/culinaries/{{culinaryId}}
+Content-Type: application/json
+
+### Get Culinary Image
+# @name GetCulinaryImageById
+GET {{BaseUrl}}/culinaries/{{culinaryId}}/image
+Content-Type: application/json
+
+### Update Culinary
+# @name UpdateCulinary
+PUT {{BaseUrl}}/culinaries/{{culinaryId}}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="nama"
+
+Naniura Update
+--WebAppBoundary
+Content-Disposition: form-data; name="deskripsi"
+
+Deskripsi kuliner khas diperbarui.
+--WebAppBoundary
+Content-Disposition: form-data; name="bahanUtama"
+
+Ikan mas segar dan rempah Batak
+--WebAppBoundary
+Content-Disposition: form-data; name="caraPenyajian"
+
+Disajikan sebagai menu spesial khas Batak.
+--WebAppBoundary
+Content-Disposition: form-data; name="hargaRataRata"
+
+40000
+--WebAppBoundary
+Content-Disposition: form-data; name="lokasiTersedia"
+
+Tuk Tuk
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="example.png"
+Content-Type: image/png
+
+< {{ImageFile}}
+--WebAppBoundary--
+
+### Delete Culinary
+# @name DeleteCulinary
+DELETE {{BaseUrl}}/culinaries/{{culinaryId}}
+Content-Type: application/json
+
+## Accommodations
+### Get All Accommodations
+# @name GetAllAccommodations
+GET {{BaseUrl}}/accommodations?search=&tipe=
+Content-Type: application/json
+
+### Create Accommodation
+# @name CreateAccommodation
+POST {{BaseUrl}}/accommodations
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="nama"
+
+Hotel Danau Indah
+--WebAppBoundary
+Content-Disposition: form-data; name="tipe"
+
+Hotel
+--WebAppBoundary
+Content-Disposition: form-data; name="deskripsi"
+
+Penginapan nyaman dengan pemandangan danau.
+--WebAppBoundary
+Content-Disposition: form-data; name="alamat"
+
+Jl. Lingkar Tuktuk, Samosir
+--WebAppBoundary
+Content-Disposition: form-data; name="latitude"
+
+2.667
+--WebAppBoundary
+Content-Disposition: form-data; name="longitude"
+
+98.860
+--WebAppBoundary
+Content-Disposition: form-data; name="hargaMulai"
+
+450000
+--WebAppBoundary
+Content-Disposition: form-data; name="fasilitas"
+
+WiFi, Sarapan, Parkir
+--WebAppBoundary
+Content-Disposition: form-data; name="kontak"
+
+082233445566
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="example.png"
+Content-Type: image/png
+
+< {{ImageFile}}
+--WebAppBoundary--
+
+> {%
+    client.global.set("accommodationId", response.body.data.accommodationId);
+%}
+
+### Get Accommodation By Id
+# @name GetAccommodationById
+GET {{BaseUrl}}/accommodations/{{accommodationId}}
+Content-Type: application/json
+
+### Get Accommodation Image
+# @name GetAccommodationImageById
+GET {{BaseUrl}}/accommodations/{{accommodationId}}/image
+Content-Type: application/json
+
+### Update Accommodation
+# @name UpdateAccommodation
+PUT {{BaseUrl}}/accommodations/{{accommodationId}}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="nama"
+
+Hotel Danau Indah Update
+--WebAppBoundary
+Content-Disposition: form-data; name="tipe"
+
+Resort
+--WebAppBoundary
+Content-Disposition: form-data; name="deskripsi"
+
+Penginapan premium dengan fasilitas lengkap.
+--WebAppBoundary
+Content-Disposition: form-data; name="alamat"
+
+Jl. Lingkar Tuktuk No. 10, Samosir
+--WebAppBoundary
+Content-Disposition: form-data; name="latitude"
+
+2.668
+--WebAppBoundary
+Content-Disposition: form-data; name="longitude"
+
+98.861
+--WebAppBoundary
+Content-Disposition: form-data; name="hargaMulai"
+
+550000
+--WebAppBoundary
+Content-Disposition: form-data; name="fasilitas"
+
+WiFi, Sarapan, Parkir, Kolam Renang
+--WebAppBoundary
+Content-Disposition: form-data; name="kontak"
+
+082233445567
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="example.png"
+Content-Type: image/png
+
+< {{ImageFile}}
+--WebAppBoundary--
+
+### Delete Accommodation
+# @name DeleteAccommodation
+DELETE {{BaseUrl}}/accommodations/{{accommodationId}}
+Content-Type: application/json
+
+## Cultures
+### Get All Cultures
+# @name GetAllCultures
+GET {{BaseUrl}}/cultures?search=&jenis=
+Content-Type: application/json
+
+### Create Culture
+# @name CreateCulture
+POST {{BaseUrl}}/cultures
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="nama"
+
+Sigale-gale
+--WebAppBoundary
+Content-Disposition: form-data; name="jenis"
+
+Pertunjukan
+--WebAppBoundary
+Content-Disposition: form-data; name="deskripsi"
+
+Pertunjukan boneka kayu tradisional khas Batak.
+--WebAppBoundary
+Content-Disposition: form-data; name="asalDaerah"
+
+Samosir
+--WebAppBoundary
+Content-Disposition: form-data; name="waktuPelaksanaan"
+
+Akhir pekan
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="example.png"
+Content-Type: image/png
+
+< {{ImageFile}}
+--WebAppBoundary--
+
+> {%
+    client.global.set("cultureId", response.body.data.cultureId);
+%}
+
+### Get Culture By Id
+# @name GetCultureById
+GET {{BaseUrl}}/cultures/{{cultureId}}
+Content-Type: application/json
+
+### Get Culture Image
+# @name GetCultureImageById
+GET {{BaseUrl}}/cultures/{{cultureId}}/image
+Content-Type: application/json
+
+### Update Culture
+# @name UpdateCulture
+PUT {{BaseUrl}}/cultures/{{cultureId}}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="nama"
+
+Sigale-gale Update
+--WebAppBoundary
+Content-Disposition: form-data; name="jenis"
+
+Tradisi
+--WebAppBoundary
+Content-Disposition: form-data; name="deskripsi"
+
+Tradisi dan pertunjukan khas Batak yang diperbarui.
+--WebAppBoundary
+Content-Disposition: form-data; name="asalDaerah"
+
+Pulau Samosir
+--WebAppBoundary
+Content-Disposition: form-data; name="waktuPelaksanaan"
+
+Setiap hari libur
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="example.png"
+Content-Type: image/png
+
+< {{ImageFile}}
+--WebAppBoundary--
+
+### Delete Culture
+# @name DeleteCulture
+DELETE {{BaseUrl}}/cultures/{{cultureId}}
+Content-Type: application/json
