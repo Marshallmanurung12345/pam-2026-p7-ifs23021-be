@@ -111,5 +111,5 @@ fun Application.configureCors() {
 
 private fun isDevelopmentOrigin(origin: String): Boolean = runCatching {
     val parsed = Url(origin)
-    parsed.protocol.name == "http" && parsed.host in setOf("localhost", "127.0.0.1")
+    parsed.protocol.name in setOf("http", "https") && parsed.host in setOf("localhost", "127.0.0.1")
 }.getOrDefault(false)

@@ -15,13 +15,13 @@ Secara default aplikasi berjalan di `http://127.0.0.1:8000` sesuai konfigurasi [
 ## Konfigurasi CORS
 
 Backend membaca origin frontend yang diizinkan dari env `CORS_ALLOWED_ORIGINS`.
-Jika env ini dikosongkan, backend akan mengizinkan origin local development dari `http://localhost:*` dan `http://127.0.0.1:*`.
+Jika env ini dikosongkan, backend akan mengizinkan origin local development dari `http://localhost:*`, `https://localhost:*`, `http://127.0.0.1:*`, dan `https://127.0.0.1:*`.
 
 Contoh:
 
 - `CORS_ALLOWED_ORIGINS=http://localhost:3000`
 - `CORS_ALLOWED_ORIGINS=http://localhost:3000,https://frontend.example.com`
-- kosongkan `CORS_ALLOWED_ORIGINS` untuk mengizinkan frontend lokal dengan port acak
+- kosongkan `CORS_ALLOWED_ORIGINS` untuk mengizinkan frontend lokal dengan port acak pada `http` maupun `https`
 
 Method yang diizinkan: `GET`, `POST`, `PUT`, `DELETE`, `OPTIONS`.
 Header yang diizinkan: `Content-Type`, `Authorization`, `Accept`, `Origin`.
