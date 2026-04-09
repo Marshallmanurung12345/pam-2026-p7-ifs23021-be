@@ -69,25 +69,14 @@ fun Application.module() {
 
 fun Application.configureCors() {
     val allowedOrigins = loadAllowedOrigins(environment)
+    val useDevelopmentOriginFallback = System.getProperty("CORS_ALLOWED_ORIGINS").isNullOrBlank()
 
     install(CORS) {
-        allowedOrigins.forEach { origin ->
-            if (origin == "*") {
-                anyHost()
-            } else {
-                val parsedOrigin = Url(origin)
-                val hostWithPort = buildString {
-                    append(parsedOrigin.host)
-                    if (parsedOrigin.port != parsedOrigin.protocol.defaultPort) {
-                        append(":")
-                        append(parsedOrigin.port)
-                    }
-                }
-
-                allowHost(
-                    host = hostWithPort,
-                    schemes = listOf(parsedOrigin.protocol.name)
-                )
+        if ("*" in allowedOrigins) {
+            anyHost()
+        } else {
+            allowOrigins { origin ->
+                origin in allowedOrigins || (useDevelopmentOriginFallback && isDevelopmentOrigin(origin))
             }
         }
 
@@ -107,6 +96,11 @@ fun Application.configureCors() {
     }
 }
 
+private fun isDevelopmentOrigin(origin: String): Boolean = runCatching {
+    val parsedOrigin = Url(origin)
+    parsedOrigin.protocol.name == "http" && parsedOrigin.host in setOf("localhost", "127.0.0.1")
+}.getOrDefault(false)
+
 private fun loadAllowedOrigins(environment: ApplicationEnvironment): List<String> {
     val configuredOrigins = System.getProperty("CORS_ALLOWED_ORIGINS")
         ?.split(",")
@@ -122,6 +116,10 @@ private fun loadAllowedOrigins(environment: ApplicationEnvironment): List<String
     return buildList {
         add("http://localhost:3000")
         add("http://127.0.0.1:3000")
+        add("http://localhost:4173")
+        add("http://127.0.0.1:4173")
+        add("http://localhost:5173")
+        add("http://127.0.0.1:5173")
         add("http://localhost:8080")
         add("http://127.0.0.1:8080")
 
