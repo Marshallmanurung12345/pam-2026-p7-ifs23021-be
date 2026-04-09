@@ -12,8 +12,9 @@ class ProfileService {
             "success",
             "Berhasil mengambil profile pengembang",
             mapOf(
-                "username" to "marshall.manurung",
+                "username" to "11s23021",
                 "nama"     to "Marshall Manurung",
+                "nim"      to "11s23021",
                 "tentang"  to "Saya adalah seorang developer yang tertarik pada mobile development, backend API, dan pengembangan aplikasi wisata daerah khususnya Samosir.",
             )
         )
