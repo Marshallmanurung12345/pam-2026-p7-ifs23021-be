@@ -75,3 +75,8 @@ CREATE TABLE IF NOT EXISTS cultures (
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL
     );
+
+
+
+
+
